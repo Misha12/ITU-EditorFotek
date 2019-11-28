@@ -1,0 +1,42 @@
+.content{
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.upper{
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	padding: 24px;
+}
+
+.lower{
+	margin: 24px;
+}
+
+.row{
+	display: flex;
+	justify-content: center;
+}
+
+.item{
+	height: calc(8.2vw + 26px);
+	width: calc(8.2vw + 26px);
+}
+
+img{
+	height: 100%;
+}
+
+input[type=text]{
+	border: 1px solid black;
+	background: white;
+	padding-right: 12px;
+	font-family: arial;
+	font-size: 24px;
+	width: 100%;
+	text-align: right;
+}

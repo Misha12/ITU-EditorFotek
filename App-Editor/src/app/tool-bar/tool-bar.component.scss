@@ -1,0 +1,35 @@
+.toolbar{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	position: relative;
+	height: 100%;
+	min-height: 416px;
+}
+
+.lower{
+	position: absolute;
+	bottom: 0;
+	margin: 12px;
+}
+
+.upper{
+	margin: 12px;
+}
+
+i{
+	font-size: 64px;
+	height: 64px;
+	width: 64px;
+	text-align: center;
+	margin-bottom: 16px;
+
+	&:last-of-type{
+		margin: 0;
+	}
+
+	&:hover{
+		color: darken(dimgray, 15%);
+		cursor: pointer;
+	}
+}

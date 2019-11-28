@@ -1,0 +1,28 @@
+.content{
+	display: flex;
+	height: 48px;
+}
+
+input[type=text]{
+	border: 1px solid black;
+	background: white;
+	padding-right: 12px;
+	font-family: arial;
+	font-size: 24px;
+	width: 64px;
+	text-align: right;
+}
+
+p{
+	margin: auto;
+	padding: 8px 8px 8px 8px;
+	font-family: arial;
+	font-size: 20px;
+}
+
+button{
+	width: 180px;
+	margin-left: 32px;
+	border: 1px solid black;
+	font-size: 20px;
+}

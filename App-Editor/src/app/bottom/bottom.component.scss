@@ -1,0 +1,46 @@
+.bottom{
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	background: #EEE;
+	padding: 0px 24px 24px 24px;
+}
+
+i{
+	font-size: 48px;
+	text-align: center;
+	width: 48px;
+	height: 48px;
+	margin-right: 16px;
+
+	&:hover{
+		color: darken(dimgray, 25%);
+		cursor: pointer;
+	}
+}
+
+.left{
+	display: flex;
+	margin: 0;
+	width: 100%;
+}
+
+.right{
+	display: flex;
+	margin: 0;
+	margin-left: 8px;
+}
+
+p{
+	font-size: 32px;
+	margin: auto;
+	margin-left: 24px;
+}
+
+button{
+	width: 128px;
+	height: 48px;
+	border: 1px solid black;
+	margin-left: 8px;
+	font-size: 20px;
+}

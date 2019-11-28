@@ -1,0 +1,45 @@
+.header{
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	background: #EEE;
+	padding: 24px 24px 0 24px;
+}
+
+i{
+	font-size: 48px;
+	width: 48px;
+	height: 48px;
+	margin-left: 16px;
+
+	&:first-of-type{
+		margin: 0;
+	}
+
+	&:hover{
+		color: darken(dimgray, 25%);
+		cursor: pointer;
+	}
+}
+
+.left{
+	display: flex;
+	width: 100%;
+	margin: 0;
+	overflow: hidden;
+}
+
+.right{
+	display: flex;
+	margin: 0;
+	padding-left: 16px;
+}
+
+p{
+	width: auto;
+	font-size: 24px;
+	margin: auto;
+	margin-left: 24px;
+	font-family: arial;
+	white-space: nowrap;
+}
