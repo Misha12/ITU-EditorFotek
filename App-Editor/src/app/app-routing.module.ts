@@ -21,6 +21,10 @@ const routes: Routes = [
   {
     path: 'rotate',
     component: RotateToolsComponent
+  },
+  {
+    path: 'free-crop',
+    component: CropToolsComponent
   }
 ];
 

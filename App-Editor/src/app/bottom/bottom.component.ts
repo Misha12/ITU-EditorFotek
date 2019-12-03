@@ -5,7 +5,8 @@ import { filter } from 'rxjs/operators'
 export enum ModeType {
   crop,
   color,
-  rotate
+  rotate,
+  freecrop
 }
 
 @Component({
@@ -27,6 +28,9 @@ export class BottomComponent implements OnInit {
           case '/color':
             this.mode = ModeType.color;
             break;
+          case '/free-crop':
+                this.mode = ModeType.freecrop;
+                break;
           default:
             this.mode = ModeType.crop;
             break;
