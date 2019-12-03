@@ -1,6 +1,7 @@
 <div class="bottom">
   <div class="left">
-    <app-crop-description-bottom-panel></app-crop-description-bottom-panel>
+    <app-crop-description-bottom-panel *ngIf="mode == 0"></app-crop-description-bottom-panel>
+    <app-rotate-bottom-panel *ngIf="mode == 2"></app-rotate-bottom-panel>
   </div>
   <div class="right">
     <i class="fas fa-print"></i>
