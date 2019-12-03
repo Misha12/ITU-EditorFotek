@@ -15,7 +15,7 @@ export class ToolBarComponent implements OnInit {
   }
 
   selectCrop() {
-    this.router.navigate(['/crop']);
+    this.router.navigate(['/free-crop']);
   }
 
   selectColor() {

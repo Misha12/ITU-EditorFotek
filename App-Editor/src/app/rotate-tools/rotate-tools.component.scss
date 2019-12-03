@@ -1,3 +1,5 @@
+@import "../../colors/";
+
 .content{
 	display: flex;
 	flex-flow: column;
@@ -31,12 +33,32 @@ img{
 	height: 100%;
 }
 
+p{
+	color: $textOnDark;
+	font-family: Arial;
+	font-size: 18px;
+}
+
+.input:first-of-type{
+
+	display: flex;
+	justify-content: space-between;
+
+	p{
+		margin-right: 24px;
+	}
+
+	margin-bottom: 32px;
+}
+
 input[type=text]{
-	border: 1px solid black;
-	background: white;
-	padding-right: 12px;
-	font-family: arial;
 	font-size: 24px;
-	width: 100%;
 	text-align: right;
+	width: 33%;
+	padding-right: 24px;
+}
+
+input[type=range]{
+	width: 100%;
+	margin-bottom: 24px;
 }

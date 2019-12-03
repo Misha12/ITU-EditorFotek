@@ -1,8 +1,11 @@
+@import "../../colors/";
+
 .content{
 	height: 48px;
 }
 
 ul{
+	color: $textOnDark;
 	font-family: arial;
 	font-size: 16px;
 	margin: auto;

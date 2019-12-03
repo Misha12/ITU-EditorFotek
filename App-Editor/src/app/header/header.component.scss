@@ -1,8 +1,10 @@
+@import "../../colors/";
+
 .header{
 	margin: auto;
 	display: flex;
 	justify-content: space-between;
-	background: #EEE;
+	background: $bcg;
 	padding: 24px 24px 0 24px;
 }
 
@@ -14,11 +16,6 @@ i{
 
 	&:first-of-type{
 		margin: 0;
-	}
-
-	&:hover{
-		color: darken(dimgray, 25%);
-		cursor: pointer;
 	}
 }
 
@@ -42,4 +39,5 @@ p{
 	margin-left: 24px;
 	font-family: arial;
 	white-space: nowrap;
+	color: $textOnDark;
 }

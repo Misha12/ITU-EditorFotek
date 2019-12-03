@@ -1,8 +1,10 @@
+@import "../../colors/";
+
 .bottom{
 	margin: auto;
 	display: flex;
 	justify-content: space-between;
-	background: #EEE;
+	background: $bcg;
 	padding: 0px 24px 24px 24px;
 }
 
@@ -12,11 +14,6 @@ i{
 	width: 48px;
 	height: 48px;
 	margin-right: 16px;
-
-	&:hover{
-		color: darken(dimgray, 25%);
-		cursor: pointer;
-	}
 }
 
 .left{
@@ -32,6 +29,7 @@ i{
 }
 
 p{
+	color: $textOnDark;
 	font-size: 32px;
 	margin: auto;
 	margin-left: 24px;
@@ -40,7 +38,7 @@ p{
 button{
 	width: 128px;
 	height: 48px;
-	border: 1px solid black;
+	border: 1px solid $border;
 	margin-left: 8px;
 	font-size: 20px;
 }

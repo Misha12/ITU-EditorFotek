@@ -1,3 +1,57 @@
+@import "colors/";
+
 body{
 	margin: 0;
+}
+
+button{
+	background: $button;
+	color: $textOnDark;
+	border-radius: 16px;
+	border: none;
+
+	&:hover{
+		background: $buttonHover;
+		color: $textOnLight;
+		cursor: pointer;
+	}
+}
+
+input{
+	background: $input;
+	border: $border;
+	font-family: arial;
+	color: $textOnLight;
+}
+
+.slider{
+	margin: auto;
+	width: 300px;
+	height: 16px;
+	-webkit-appearance: none;
+	appearance: none;
+	background: $slider;
+	border: 1px solid $border;
+	border-radius: 10px;
+}
+
+.slider::-webkit-slider-thumb {
+	width: 32px;
+	height: 32px;
+	-webkit-appearance: none;
+	appearance: none;
+	background: $sliderHandle;
+	cursor: pointer;
+	border: 1px solid $border;
+	border-radius: 10px;
+}
+
+i{
+	text-shadow: 0px 0px 7px black, 0px 0px 3px black;
+	color: $icon;
+
+	&:hover{
+		color: $iconHover;
+		cursor: pointer;
+	}
 }

@@ -7,7 +7,7 @@ import { RotateToolsComponent } from './rotate-tools/rotate-tools.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'crop',
+    redirectTo: 'free-crop',
     pathMatch: 'full'
   },
   {

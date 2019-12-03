@@ -1,15 +1,18 @@
+@import "../../colors/";
+
 p{
 	font-family: arial;
 	font-size: 20px;
 	padding: 12px 0 12px 16px;
 	margin: auto;
-	background: whitesmoke;
+	background: $recBcg;
 	user-select: none;
-	border: 1px solid black;
+	border: 1px solid $border;
 	border-width: 0px 0px 1px 0px;
+	color: $textOnDark;
 
 	&:hover{
-		background: white;
+		background: $textOnDarkHighlight;
 		cursor: pointer;
 	}
 }

@@ -1,3 +1,5 @@
+@import "../../colors/";
+
 .content{
 	display: flex;
 	height: 48px;
@@ -9,26 +11,11 @@ p{
 	margin: auto;
 	margin-right: 16px;
 	white-space: nowrap;
+	color: $textOnDark;
 }
 
 .slider{
 	margin: auto;
 	width: 300px;
 	height: 16px;
-	-webkit-appearance: none;
-	appearance: none;
-	background: lightgray;
-	border: 1px solid black;
-	border-radius: 10px;
-}
-
-.slider::-webkit-slider-thumb {
-	width: 32px;
-	height: 32px;
-	-webkit-appearance: none;
-	appearance: none;
-	background: gray;
-	cursor: pointer;
-	border: 1px solid black;
-	border-radius: 10px;
 }

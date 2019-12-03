@@ -1,3 +1,5 @@
+@import "../../colors/";
+
 p{
 	width: 100%;
 	margin: auto;
@@ -5,17 +7,18 @@ p{
 	font-size: 20px;
 	font-family: arial;
 	white-space: nowrap;
+	color: $textOnDark;
 }
 
 .content{
 	padding-left: 16px;
-	border: 1px solid black;
+	border: 1px solid $border;
 	border-width: 0px 0px 1px 0px;
-	background: whitesmoke;
+	background: $recBcg;
 	user-select: none;
 
 	&:hover{
-		background: white;
+		background: $textOnDarkHighlight;
 		cursor: pointer;
 	}
 }
