@@ -1,0 +1,15 @@
+p{
+	font-family: arial;
+	font-size: 20px;
+	padding: 12px 0 12px 16px;
+	margin: auto;
+	background: whitesmoke;
+	user-select: none;
+	border: 1px solid black;
+	border-width: 0px 0px 1px 0px;
+
+	&:hover{
+		background: white;
+		cursor: pointer;
+	}
+}

@@ -15,6 +15,7 @@ import { RotateBottomPanelComponent } from './rotate-bottom-panel/rotate-bottom-
 import { CropDescriptionBottomPanelComponent } from './crop-description-bottom-panel/crop-description-bottom-panel.component';
 import { ColorToolsComponent } from './color-tools/color-tools.component';
 import { RotateToolsComponent } from './rotate-tools/rotate-tools.component';
+import { CropToolsComponent } from './crop-tools/crop-tools.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { RotateToolsComponent } from './rotate-tools/rotate-tools.component';
     RotateBottomPanelComponent,
     CropDescriptionBottomPanelComponent,
     ColorToolsComponent,
-    RotateToolsComponent
+    RotateToolsComponent,
+    CropToolsComponent
   ],
   imports: [
     BrowserModule,
