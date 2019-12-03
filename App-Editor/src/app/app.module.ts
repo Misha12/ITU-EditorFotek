@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
-import { AppBodyComponent } from './app-body/app-body.component';
+import { BodyComponent } from './body/body.component';
 import { BottomComponent } from './bottom/bottom.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { TemplateItemComponent } from './template-item/template-item.component';
@@ -20,7 +20,7 @@ import { RotateToolsComponent } from './rotate-tools/rotate-tools.component';
   declarations: [
     AppComponent,
     HeaderComponent,
-    AppBodyComponent,
+    BodyComponent,
     BottomComponent,
     ToolBarComponent,
     TemplateItemComponent,
