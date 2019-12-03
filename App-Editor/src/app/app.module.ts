@@ -11,7 +11,6 @@ import { BottomComponent } from './bottom/bottom.component';
 import { ToolBarComponent } from './tool-bar/tool-bar.component';
 import { TemplateItemComponent } from './template-item/template-item.component';
 import { FreeCropPanelComponent } from './free-crop-panel/free-crop-panel.component';
-import { ColorBottomPanelComponent } from './color-bottom-panel/color-bottom-panel.component';
 import { RotateBottomPanelComponent } from './rotate-bottom-panel/rotate-bottom-panel.component';
 import { CropDescriptionBottomPanelComponent } from './crop-description-bottom-panel/crop-description-bottom-panel.component';
 import { ColorToolsComponent } from './color-tools/color-tools.component';
@@ -26,7 +25,6 @@ import { RotateToolsComponent } from './rotate-tools/rotate-tools.component';
     ToolBarComponent,
     TemplateItemComponent,
     FreeCropPanelComponent,
-    ColorBottomPanelComponent,
     RotateBottomPanelComponent,
     CropDescriptionBottomPanelComponent,
     ColorToolsComponent,
