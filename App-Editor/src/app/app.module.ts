@@ -15,6 +15,7 @@ import { CropDescriptionBottomPanelComponent } from './crop-description-bottom-p
 import { ColorToolsComponent } from './color-tools/color-tools.component';
 import { RotateToolsComponent } from './rotate-tools/rotate-tools.component';
 import { CropToolsComponent } from './crop-tools/crop-tools.component';
+import { DeviceDetectorModule } from 'ngx-device-detector';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CropToolsComponent } from './crop-tools/crop-tools.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ServiceWorkerModule.register('ngsw-worker.js')
+    ServiceWorkerModule.register('ngsw-worker.js'),
+    DeviceDetectorModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

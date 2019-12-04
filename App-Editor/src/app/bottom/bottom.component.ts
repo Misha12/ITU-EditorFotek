@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators'
+import { filter } from 'rxjs/operators';
+import { DeviceDetectorService } from 'ngx-device-detector';
+import { ComponentBase } from '../component.base';
 
 export enum ModeType {
   crop,
@@ -14,10 +16,15 @@ export enum ModeType {
   templateUrl: './bottom.component.html',
   styleUrls: ['./bottom.component.scss']
 })
-export class BottomComponent implements OnInit {
+export class BottomComponent extends ComponentBase implements OnInit {
   mode = ModeType.crop;
 
-  constructor(router: Router) {
+  constructor(
+    router: Router,
+    deviceDetection: DeviceDetectorService
+  ) {
+    super(deviceDetection);
+
     router.events
       .pipe(filter(ev => ev instanceof NavigationEnd))
       .subscribe((x: NavigationEnd) => {
