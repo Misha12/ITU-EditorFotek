@@ -11,6 +11,7 @@
 	background: $recBcg;
 	height: auto;
 	margin: 24px;
+	border-radius: 8px;
 }
 
 .edit{
@@ -22,8 +23,7 @@
 }
 
 .menu{
-	resize: horizontal;
-	width: 600px;
+	width: 400px;
 	min-width: 100px;
 	margin-right: 0;
 	margin-left: 16px;
@@ -32,7 +32,7 @@
 
 .tools{
 	margin-left: 16px;
-	width: 88px;
-	min-width: 88px;
+	width: 72px;
+	min-width: 72px;
 	overflow: auto;
 }

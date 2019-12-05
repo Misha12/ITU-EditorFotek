@@ -11,12 +11,18 @@ p{
 }
 
 .content{
-	padding-left: 16px;
+	padding-left: 32px;
+	padding-right: 32px;
 	background: $recBcg;
 	user-select: none;
+	white-space: nowrap;
 
 	&:hover{
-		background: $textOnDarkHighlight;
+		background: $templateItemHover;
 		cursor: pointer;
+	}
+
+	p:hover{
+		color: $buttonHover;
 	}
 }

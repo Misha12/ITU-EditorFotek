@@ -1,9 +1,14 @@
 @import "../../colors/";
 
+.content{
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+
 p{
 	font-family: arial;
 	font-size: 20px;
-	padding: 12px 0 12px 16px;
+	padding: 12px 0 12px 32px;
 	margin: auto;
 	background: $recBcg;
 	user-select: none;
@@ -11,6 +16,7 @@ p{
 
 	&:hover{
 		background: $textOnDarkHighlight;
+		color: $buttonHover;
 		cursor: pointer;
 	}
 }

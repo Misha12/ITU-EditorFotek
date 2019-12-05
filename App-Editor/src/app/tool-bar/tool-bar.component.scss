@@ -6,27 +6,31 @@
 	justify-content: space-between;
 	position: relative;
 	height: 100%;
-	min-height: 416px;
+	min-height: 296px;
 }
 
 .lower{
 	position: absolute;
 	bottom: 0;
 	margin: 12px;
+	margin-bottom: 16px;
 }
 
 .upper{
 	margin: 12px;
+	margin-top: 16px;
 }
 
 i{
-	font-size: 64px;
-	height: 64px;
-	width: 64px;
+	font-size: 40px;
+	height: 40px;
+	width: 40px;
+	margin-left: 4px;
 	text-align: center;
 	margin-bottom: 16px;
 
 	&:last-of-type{
 		margin: 0;
+		margin-left: 4px;
 	}
 }

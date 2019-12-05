@@ -7,7 +7,7 @@ body{
 button{
 	background: $button;
 	color: $textOnDark;
-	border-radius: 16px;
+	border-radius: 8px;
 	border: none;
 
 	&:hover{
@@ -22,22 +22,22 @@ input{
 	border: $border;
 	font-family: arial;
 	color: $textOnLight;
+	border-radius: 4px;
 }
 
 .slider{
 	margin: auto;
 	width: 300px;
-	height: 16px;
+	height: 12px;
 	-webkit-appearance: none;
 	appearance: none;
-	background: $slider;
-	border: 1px solid $border;
+	background-image: linear-gradient(to right, $sliderDark, $slider, $sliderDark);
 	border-radius: 10px;
 }
 
 .slider::-webkit-slider-thumb {
-	width: 32px;
-	height: 32px;
+	width: 20px;
+	height: 20px;
 	-webkit-appearance: none;
 	appearance: none;
 	background: $sliderHandle;
@@ -47,7 +47,7 @@ input{
 }
 
 i{
-	text-shadow: 0px 0px 7px black, 0px 0px 3px black;
+	text-shadow: 0px 0px 7px rgb(19, 19, 19), 0px 0px 3px rgb(27, 27, 27);
 	color: $icon;
 
 	&:hover{
