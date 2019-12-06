@@ -1,8 +1,8 @@
 <div class="header">
   <div class="left">
-    <i class="fas fa-file"></i>
+    <i class="fas fa-file" (click)="newFile()"></i>
     <i class="fas fa-trash-alt"></i>
-    <p>Současná velikost: 512 x 512 px</p>
+    <p *ngIf="canvasService.currentSize">Současná velikost: {{canvasService.currentSize.width}} x {{canvasService.currentSize.height}} px</p>
   </div>
   <div class="right">
     <i class="fas fa-arrow-left"></i>
