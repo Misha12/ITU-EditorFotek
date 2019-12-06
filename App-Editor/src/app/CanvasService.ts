@@ -20,6 +20,10 @@ export class CanvasService {
 
     imageFile: File;
     currentImg: HTMLImageElement;
+    currentAngle = 0;
+
+    flipHorizontal = false;
+    flipVertical = false;
 
     get currentSize(): Size {
         if (!this.currentImg) { return null; }
@@ -43,10 +47,7 @@ export class CanvasService {
 
             img.onload = () => {
                 this.currentImg = img;
-                const resolution = this.computeResolution(img);
-
-                this.clear();
-                this.context.drawImage(img, resolution.x, resolution.y, resolution.width, resolution.height);
+                this.drawCurrentImage();
             };
 
             img.src = (e.target as any).result.toString();
@@ -79,7 +80,53 @@ export class CanvasService {
         return rect;
     }
 
-    clear() {
-        this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
+    drawCurrentImage() {
+        const resolution = this.computeResolution(this.currentImg);
+
+        const scaleH = this.flipHorizontal ? -1 : 1;
+        const scaleV = this.flipVertical ? -1 : 1;
+
+        this.clear();
+        this.context.save();
+        this.context.translate(this.canvas.nativeElement.width / 2, this.canvas.nativeElement.height / 2);
+        this.context.scale(scaleH, scaleV);
+        this.context.rotate(this.degreeToRad(this.currentAngle));
+
+        this.context.drawImage(this.currentImg,
+            -this.currentImg.width / 2,
+            -this.currentImg.height / 2,
+            resolution.width,
+            resolution.height);
+
+        this.context.restore();
+    }
+
+    degreeToRad(degree: number) { return degree * Math.PI / 180.0; }
+    clear() { this.context.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height); }
+    fixedRotate(angle: number) { return this.rotateImage(this.currentAngle + angle); }
+
+    rotateImage(angle: number) {
+        if (angle < -180) {
+            const diff = angle + 180;
+            this.currentAngle = 180 + diff;
+        } else if (angle > 180) {
+            const diff = angle - 180;
+            this.currentAngle = -180 + diff;
+        } else {
+            this.currentAngle = angle;
+        }
+
+        this.drawCurrentImage();
+        return this.currentAngle;
+    }
+
+    setFlip(mode: 'horizontal' | 'vertical') {
+        if (mode === 'horizontal') {
+            this.flipHorizontal = !this.flipHorizontal;
+        } else if (mode === 'vertical') {
+            this.flipVertical = !this.flipVertical;
+        }
+
+        this.drawCurrentImage();
     }
 }

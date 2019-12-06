@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { HeaderComponent } from './header/header.component';
 import { BodyComponent } from './body/body.component';
 import { BottomComponent } from './bottom/bottom.component';
@@ -36,7 +36,8 @@ import { CanvasService } from './CanvasService';
     BrowserModule,
     AppRoutingModule,
     // ServiceWorkerModule.register('ngsw-worker.js'),
-    DeviceDetectorModule.forRoot()
+    DeviceDetectorModule.forRoot(),
+    FormsModule
   ],
   providers: [CanvasService],
   bootstrap: [AppComponent]
