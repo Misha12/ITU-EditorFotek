@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ComponentBase } from '../component.base';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CanvasService } from '../CanvasService';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-body',

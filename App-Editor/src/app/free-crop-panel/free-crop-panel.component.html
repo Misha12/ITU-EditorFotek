@@ -1,7 +1,8 @@
 <div class="content">
-  <input type="text" name="width">
+  <input type="number" [(ngModel)]="width" (ngModelChange)="setWidth($event)">
   <p>X</p>
-  <input type="text" name="height">
+  <input type="number" [(ngModel)]="height" (ngModelChange)="setHeight($event)">
   <p>px</p>
-  <button>Uložit šablonu</button>
+  <input type="text" [(ngModel)]="name" (ngModelChange)="name = $event" />
+  <button (click)="saveCropTemplate()">Uložit šablonu</button>
 </div>

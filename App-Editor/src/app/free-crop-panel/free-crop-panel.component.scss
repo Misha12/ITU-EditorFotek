@@ -5,11 +5,15 @@
 	height: 48px;
 }
 
-input[type=text]{
+input[type=number], input[type=text]{
 	padding-right: 12px;
 	font-size: 24px;
 	width: 64px;
 	text-align: right;
+}
+
+input[type=text] {
+  width: 256px !important;
 }
 
 p{

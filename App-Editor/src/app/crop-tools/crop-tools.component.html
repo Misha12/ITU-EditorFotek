@@ -1,13 +1,7 @@
 <div class="content">
-	<app-template-item name="Volný ořez" (click)="selectFreeCrop()"></app-template-item>
-	<app-template-item name="ISIC" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="Občanský průkaz" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="Pas" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="USA vízum" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="Zbrojní pas" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="Lovecký pas" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="Instagram" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="Facebook - záhlaví" (click)="selectCrop()"></app-template-item>
-	<app-template-item name="Facebook - profilová" (click)="selectCrop()"></app-template-item>
-	<p>Přidat šablonu...</p>
+  <app-template-item *ngFor="let setting of settings" name="{{setting.name}}" (click)="selectCrop(setting.id)"
+    [ngClass]="{'active': setting.isActive}">
+  </app-template-item>
+  <app-template-item name="Volný ořez" (click)="selectFreeCrop()"></app-template-item>
+  <p>Přidat šablonu...</p>
 </div>

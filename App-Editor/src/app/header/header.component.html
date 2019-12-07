@@ -1,7 +1,7 @@
 <div class="header">
   <div class="left">
     <i class="fas fa-file" (click)="newFile()"></i>
-    <i class="fas fa-trash-alt"></i>
+    <i class="fas fa-trash-alt" (click)="canvasService.resetHistory()"></i>
     <p *ngIf="canvasService.currentSize">Současná velikost: {{canvasService.currentSize.width}} x {{canvasService.currentSize.height}} px</p>
   </div>
   <div class="right">

@@ -21,6 +21,7 @@ export class HeaderComponent extends ComponentBase implements OnInit {
   newFile() {
     if (confirm('rly?')) { // TODO Dialog.
       const fileElement = document.getElementById('file') as HTMLInputElement;
+      this.canvasService.resetHistory(false);
       fileElement.click();
     }
   }
