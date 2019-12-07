@@ -1,5 +1,7 @@
-<div class="outer" *ngIf=visible>
+<div class="outer">
   <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+    <p>Prosím, nahrejte fotografii kliknutím či přetažením souboru nad vyznačenou plochu</p>
+    <i class="fas fa-file"></i>
     <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
   </div>
 </div>

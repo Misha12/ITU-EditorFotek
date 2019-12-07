@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploadFileComponent implements OnInit {
 
-  public visible = true;
-
   constructor() { }
 
   ngOnInit() {
@@ -17,12 +15,8 @@ export class UploadFileComponent implements OnInit {
   files: any = [];
 
   uploadFile(event) {
-    for (let index = 0; index < event.length; index++) {
-      const element = event[index];
-      this.files.push(element.name)
-    }
-
-    this.visible = false;
+    const element = event;
+    this.files.push(element.name);
   }
 
 }
