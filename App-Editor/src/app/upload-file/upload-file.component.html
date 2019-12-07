@@ -1,0 +1,5 @@
+<div class="outer" *ngIf=visible>
+  <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+    <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+  </div>
+</div>

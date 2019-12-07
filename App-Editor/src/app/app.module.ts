@@ -17,6 +17,8 @@ import { RotateToolsComponent } from './rotate-tools/rotate-tools.component';
 import { CropToolsComponent } from './crop-tools/crop-tools.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { CanvasService } from './CanvasService';
+import { DragDropDirective } from './drag-drop.directive';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { CanvasService } from './CanvasService';
     CropDescriptionBottomPanelComponent,
     ColorToolsComponent,
     RotateToolsComponent,
-    CropToolsComponent
+    CropToolsComponent,
+    DragDropDirective,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,24 @@
+@import "../../colors/";
+
+.outer{
+	padding-top: 10vh;
+	padding-bottom: 10vh;
+	padding-left: 5vw;
+	padding-right: 5vw;
+	height: 80vh;
+	width: 90vw;
+	background: $bcg;
+}
+
+.uploadfilecontainer {
+    height: 100%;
+    width: 100%;
+    border: 2px dashed $border;
+	border-radius: 10px;
+	background-color: $recBcg;
+}
+
+.uploadfilecontainer:hover {
+    cursor: pointer;
+    background-color: $sliderHandle !important;
+}
