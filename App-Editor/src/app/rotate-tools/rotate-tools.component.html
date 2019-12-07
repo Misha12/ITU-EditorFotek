@@ -2,14 +2,14 @@
     <div class="upper">
         <img src="/assets/left.png" (click)="rotate(-90)">
         <img src="/assets/right.png" (click)="rotate(90)">
-        <img src="/assets/horizontal.png" (click)="flip('horizontal')">
-        <img src="/assets/vertical.png" (click)="flip('vertical')">
+        <img src="/assets/horizontal.png" (click)="flip('vertical')">
+        <img src="/assets/vertical.png" (click)="flip('horizontal')">
     </div>
     <div class="lower">
         <div class="input">
             <p>Náklon o úhel:</p>
             <div class="angle">
-                <input type="number" [(ngModel)]="currentRotate" (ngModelChange)="onRotateChange($event)">
+                <input type="number" min="-180" max="180" [(ngModel)]="currentRotate" (ngModelChange)="onRotateChange($event)">
                 <p>°</p>
             </div>
         </div>
