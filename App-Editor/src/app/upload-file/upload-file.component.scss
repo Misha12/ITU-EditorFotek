@@ -1,0 +1,49 @@
+@import "../../colors/";
+
+.outer{
+	padding-top: 10vh;
+	padding-bottom: 10vh;
+	padding-left: 5vw;
+	padding-right: 5vw;
+	height: 80vh;
+	width: 90vw;
+	background: $bcg;
+}
+
+p{
+	text-align: center;
+	color: $textOnDark;
+	padding: 64px;
+	padding-top: 28vh;
+	padding-bottom: 24px;
+	font-family: arial;
+	font-size: 24px;
+	overflow: hidden;
+}
+
+i{
+	text-align: center;
+	vertical-align: center;
+	text-shadow: none;
+	font-size: 96px;
+	overflow: hidden;
+}
+
+.uploadfilecontainer {
+    height: 100%;
+    width: 100%;
+    border: 2px dashed $border;
+	border-radius: 10px;
+	background-color: $recBcg;
+	display: flex;
+	flex-flow: column;
+}
+
+.uploadfilecontainer:hover {
+    cursor: pointer;
+	background-color: $sliderHandle !important;
+	
+	p, i{
+		color: white;
+	}
+}
