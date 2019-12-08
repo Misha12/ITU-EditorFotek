@@ -54,6 +54,10 @@ export class CanvasService {
 
   history: HistoryItem[] = [];
   thereHistory: HistoryItem[] = [];
+  brightness = 100;
+  contrast = 100;
+  saturate = 100;
+  background = '#585858';
 
   get currentSize(): Size {
     if (!this.currentImg) { return null; }
@@ -136,7 +140,6 @@ export class CanvasService {
     let scaleV = this.flipVertical ? -1 : 1;
 
     const zoomValue = this.zoomValues[this.selectedZoomvalue];
-
     scaleH *= zoomValue.value;
     scaleV *= zoomValue.value;
 
@@ -144,10 +147,13 @@ export class CanvasService {
     const canvasY = mouseEvent ? mouseEvent.y : this.canvas.nativeElement.height / 2.0;
 
     this.clear();
+    this.context.fillStyle = this.background;
+    this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     this.context.save();
     this.context.translate(canvasX, canvasY);
     this.context.scale(scaleH, scaleV);
     this.context.rotate(this.degreeToRad(this.currentAngle));
+    this.context.filter = `brightness(${(this.brightness)}%) contrast(${this.contrast}%) saturate(${this.saturate}%)`;
 
     this.context.drawImage(this.currentImg, -resolution.width / 2.0, -resolution.height / 2.0, resolution.width, resolution.height);
     this.context.restore();
@@ -345,5 +351,25 @@ export class CanvasService {
 
   get currentZoom() {
     return this.zoomValues[this.selectedZoomvalue];
+  }
+
+  setBrightness(value: number) {
+    this.brightness = value;
+    this.drawCurrentImage(null);
+  }
+
+  setContrast(value: number) {
+    this.contrast = value;
+    this.drawCurrentImage(null);
+  }
+
+  setSaturate(value: number) {
+    this.saturate = value;
+    this.drawCurrentImage(null);
+  }
+
+  setBackground(color: string) {
+    this.background = color;
+    this.drawCurrentImage(null);
   }
 }

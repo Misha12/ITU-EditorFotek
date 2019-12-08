@@ -2,20 +2,20 @@
   <div class="upper">
       <div class="item">
           <p>Jas</p>
-          <input type="range" min="0" max="100" value="50" class="slider">
+          <input type="range" min="0" max="100" [(ngModel)]="brightness" (ngModelChange)="setBrightness($event)" class="slider">
       </div>
       <div class="item">
           <p>Kontrast</p>
-          <input type="range" min="0" max="100" value="50" class="slider">
+          <input type="range" min="0" max="100" [(ngModel)]="contrast" (ngModelChange)="setContrast($event)" class="slider">
       </div>
       <div class="item">
           <p>Saturace</p>
-          <input type="range" min="0" max="100" value="50" class="slider">
+          <input type="range" min="0" max="100" [(ngModel)]="saturate" (ngModelChange)="setSaturate($event)" class="slider">
       </div>
-  </div>  
-  <div class="lower"> 
+  </div>
+  <div class="lower">
     <div class="item">
-      <button>Změnit barvu podkladu</button>
+      <input type="color" class="color-picker" [(ngModel)]="backgroundColor" (ngModelChange)="setBackground($event)" />
     </div>
   </div>
 </div>
