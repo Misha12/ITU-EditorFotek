@@ -39,7 +39,7 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
 
   ngOnInit() {
     this.loadSettings();
-    setInterval(() => this.loadSettings(), 500);
+    //setInterval(() => this.loadSettings(), 500);
   }
 
   loadSettings() {

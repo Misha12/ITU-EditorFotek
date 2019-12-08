@@ -10,6 +10,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 export class TemplateItemComponent extends ComponentBase implements OnInit {
 
   @Input() name: string;
+  @Input() isActive = false;
 
   constructor(
     protected deviceDetection: DeviceDetectorService

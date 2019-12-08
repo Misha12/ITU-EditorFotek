@@ -26,3 +26,10 @@ p{
 		color: $buttonHover;
 	}
 }
+
+.active p{
+	color: white;
+	font-weight: 600;
+	font-size: 22px;
+	transition: 200ms all;
+}
