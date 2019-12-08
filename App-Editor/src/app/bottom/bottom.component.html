@@ -4,8 +4,8 @@
     <app-free-crop-panel *ngIf="mode == 3"></app-free-crop-panel>
   </div>
   <div class="right">
-    <i class="fas fa-print"></i>
+    <i class="fas fa-print" (click)="printImage()"></i>
     <i class="fas fa-share-alt"></i>
-    <button>Uložit</button>
+    <button (click)="saveImage()">Uložit</button>
   </div>
 </div>
