@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-upload-file',
@@ -6,17 +6,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./upload-file.component.scss']
 })
 export class UploadFileComponent implements OnInit {
+  @Output() fileUploaded = new EventEmitter<File>();
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  files: any = [];
-
-  uploadFile(event) {
-    const element = event;
-    this.files.push(element.name);
+  uploadFile(event: any) {
+    if (event instanceof FileList) {
+      const list = event as FileList;
+      if (list.length > 0 && list[0]) {
+        this.fileUploaded.emit(list[0] as File);
+      }
+    }
   }
 
 }

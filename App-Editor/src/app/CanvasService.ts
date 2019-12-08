@@ -32,7 +32,7 @@ export class CanvasService {
     return { width: this.currentImg.width, height: this.currentImg.height };
   }
 
-  init() {
+  init(resize: boolean = false) {
     const css = window.getComputedStyle(this.canvas.nativeElement);
 
     this.canvas.nativeElement.width = parseFloat(css.width.replace('px', ''));
@@ -52,7 +52,11 @@ export class CanvasService {
       this.canMove = true;
     };
 
-    this.selectedCropSetting = null;
+    if (resize) {
+      this.drawCurrentImage(null);
+    } else {
+      this.selectedCropSetting = null;
+    }
   }
 
   loadImage(file: File) {
