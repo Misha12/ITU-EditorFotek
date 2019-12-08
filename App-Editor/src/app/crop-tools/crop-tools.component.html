@@ -1,6 +1,7 @@
 <div class="content">
+  <app-template-item name="Volný ořez" (click)="selectFreeCrop()"></app-template-item>
+  <app-template-item name="Zrušit ořez" (click)="cancelCrop()"></app-template-item>
   <app-template-item *ngFor="let setting of settings" name="{{setting.name}}" (click)="selectCrop(setting.id)"
     [ngClass]="{'active': setting.isActive}">
   </app-template-item>
-  <app-template-item name="Volný ořez" (click)="selectFreeCrop()"></app-template-item>
 </div>

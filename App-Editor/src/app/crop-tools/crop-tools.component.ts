@@ -26,7 +26,13 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
     // tslint:disable-next-line: max-line-length
     { id: 'facebook_profile', name: 'Facebook - Profilová', desc: 'Profilová fotografie na Facebook', ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false },
     // tslint:disable-next-line: max-line-length
-    { id: 'facebook_header', name: 'Facebook - Záhlaví', desc: 'Záhlaví na facebook', ratioX: 205, ratioY: 78, height: 0, width: 0, isActive: false, custom: false }
+    { id: 'facebook_header', name: 'Facebook - Záhlaví', desc: 'Záhlaví na facebook', ratioX: 1, ratioY: 2.7, height: 0, width: 0, isActive: false, custom: false },
+    { id: 'isic', name: 'ISIC', desc: 'Průkazové fotogragie - ISIC', ratioX: 5, ratioY: 6, width: 0, height: 0, isActive: false, custom: false },
+    { id: 'usa-passport', name: 'USA - Výzum', desc: null, ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false },
+    { id: 'zbrojni-prukaz', name: 'Zbrojní průkaz', desc: null, ratioX: 7, ratioY: 9, height: 0, width: 0, isActive: false, custom: false },
+    { id: 'ig-story', name: 'Instagram - Stories', desc: 'Instagramové příběhy', ratioX: 9, ratioY: 16, width: 0, height: 0, isActive: false, custom: false },
+    // tslint:disable-next-line: max-line-length
+    { id: 'ig-landscape', name: 'Instagram - Profilová', desc: 'Profilová fotografie na Instagram', ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false }
   ];
 
   private selectedSetting: string;
@@ -50,7 +56,9 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
       localStorage.setItem('crop_settings', json);
     } else {
       const jsonData = JSON.parse(data) as CropSetting[];
-      this.settings = jsonData;
+      const notExists = jsonData.filter(o => !this.settings.some(x => x.id === o.id));
+
+      for (const item of notExists) { this.settings.push(item); }
     }
   }
 
@@ -72,4 +80,7 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
     this.router.navigate(['/crop']);
   }
 
+  cancelCrop() {
+    this.canvasService.renderCropArray(null);
+  }
 }

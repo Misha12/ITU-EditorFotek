@@ -238,7 +238,7 @@ export class CanvasService {
     const imageResolution = this.computeResolution(this.currentImg);
 
     const imageAspectRatio = imageResolution.width / imageResolution.height;
-    const cutAspectRatio = this.selectedCropSetting.ratioX / this.selectedCropSetting.ratioY;
+    const cutAspectRatio = this.selectedCropSetting.ratioY / this.selectedCropSetting.ratioX;
 
     if (imageAspectRatio > cutAspectRatio) {
       cropSize.height = imageResolution.height;
