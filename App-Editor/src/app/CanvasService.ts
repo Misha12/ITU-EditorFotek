@@ -55,6 +55,8 @@ export class CanvasService {
   saturate2 = 100;
   background = '#585858';
   background2 = '#585858';
+  grayscale = 0;
+  grayscale2 = 0;
 
   get currentSize(): Size {
     if (!this.currentImg) { return null; }
@@ -150,7 +152,7 @@ export class CanvasService {
     this.context.translate(canvasX, canvasY);
     this.context.scale(scaleH, scaleV);
     this.context.rotate(this.degreeToRad(this.currentAngle));
-    this.context.filter = `brightness(${(this.brightness2)}%) contrast(${this.contrast2}%) saturate(${this.saturate2}%)`;
+    this.context.filter = `brightness(${(this.brightness2)}%) contrast(${this.contrast2}%) saturate(${this.saturate2}%) grayscale(${this.grayscale2}%)`;
 
     this.context.drawImage(this.currentImg, -resolution.width / 2.0, -resolution.height / 2.0, resolution.width, resolution.height);
     this.context.restore();
@@ -163,7 +165,11 @@ export class CanvasService {
 
       const darkRects = this.getDarkRectangles({ height: cropResolution.height, width: cropResolution.width, x: rectX, y: rectY });
 
-      this.context.strokeStyle = this.context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      this.context.strokeStyle = 'white';
+      this.context.lineWidth = 3;
+      this.context.strokeRect(rectX, rectY, cropResolution.width, cropResolution.height);
+
+      this.context.strokeStyle = this.context.fillStyle = 'rgba(0, 0, 0, 0.7)';
       for (const rect of darkRects) {
         this.context.fillRect(rect.x, rect.y, rect.width, rect.height);
       }
@@ -261,6 +267,7 @@ export class CanvasService {
     this.contrast = this.contrast2 = 100;
     this.saturate = this.saturate2 = 100;
     this.background = this.background2 = '#585858';
+    this.grayscale = this.grayscale2 = 100;
 
     if (redraw) {
       this.drawCurrentImage(undefined);
@@ -315,6 +322,10 @@ export class CanvasService {
         this.background = this.background2 = (operation.operation as ColorChange).oldColor;
         this.drawCurrentImage(null);
         break;
+      case 'grayscale':
+        this.grayscale = this.grayscale2 = (operation.operation as FilterChange).oldValue;
+        this.drawCurrentImage(null);
+        break;
     }
 
     this.thereHistory.push(operation);
@@ -363,6 +374,10 @@ export class CanvasService {
         break;
       case 'color':
         this.background = this.background2 = (operation.operation as ColorChange).newColor;
+        this.drawCurrentImage(null);
+        break;
+      case 'grayscale':
+        this.grayscale = this.grayscale2 = (operation.operation as FilterChange).newValue;
         this.drawCurrentImage(null);
         break;
     }
@@ -415,6 +430,14 @@ export class CanvasService {
     if (this.background2 !== color) {
       this.pushHistory('color', { newColor: color, oldColor: this.background2 } as ColorChange);
       this.background2 = color;
+      this.drawCurrentImage(null);
+    }
+  }
+
+  setGrayscale(value: number) {
+    if (this.grayscale2 !== value) {
+      this.pushHistory('grayscale', { newValue: value, oldValue: this.grayscale2 } as FilterChange);
+      this.grayscale2 = value;
       this.drawCurrentImage(null);
     }
   }
