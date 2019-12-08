@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Input } from '@angular/core';
 import { ComponentBase } from '../component.base';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CanvasService } from '../CanvasService';
@@ -19,10 +19,18 @@ export class HeaderComponent extends ComponentBase implements OnInit {
   }
 
   newFile() {
-    if (confirm('rly?')) { // TODO Dialog.
-      const fileElement = document.getElementById('file') as HTMLInputElement;
-      this.canvasService.resetHistory(false);
-      fileElement.click();
+    if (confirm('rly?')) {
+      const file = document.createElement('input');
+      file.type = 'file';
+
+      file.onchange = _ => {
+        if (file.files && file.files.length > 0 && file.files[0]) {
+          this.canvasService.resetHistory(false);
+          this.canvasService.loadImage(file.files[0]);
+        }
+      };
+
+      file.click();
     }
   }
 }

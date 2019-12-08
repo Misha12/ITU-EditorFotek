@@ -267,7 +267,7 @@ export class CanvasService {
     this.contrast = this.contrast2 = 100;
     this.saturate = this.saturate2 = 100;
     this.background = this.background2 = '#585858';
-    this.grayscale = this.grayscale2 = 100;
+    this.grayscale = this.grayscale2 = 0;
 
     if (redraw) {
       this.drawCurrentImage(undefined);
