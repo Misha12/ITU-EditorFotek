@@ -437,6 +437,7 @@ export class CanvasService {
   }
 
   get currentZoomText() { return this.actualZoom.text; }
+  set currentZoomText(_: string) { }
 
   setBrightness(value: number) {
     if (value !== this.brightness2) {
