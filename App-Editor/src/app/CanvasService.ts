@@ -44,6 +44,8 @@ export class CanvasService {
   grayscale = 0;
   grayscale2 = 0;
 
+  lastMousePosition: { x: number, y: number };
+
   get currentSize(): Size {
     if (!this.currentImg) { return null; }
     return { width: this.currentImg.width, height: this.currentImg.height };
@@ -57,6 +59,7 @@ export class CanvasService {
 
     this.canvas.nativeElement.onmousemove = (ev) => {
       if (this.canMove) {
+        this.lastMousePosition = { x: ev.x, y: ev.y };
         this.drawCurrentImage(ev);
       }
     };
@@ -150,14 +153,25 @@ export class CanvasService {
     scaleH *= this.actualZoom.value;
     scaleV *= this.actualZoom.value;
 
-    const canvasX = mouseEvent ? mouseEvent.x : this.canvas.nativeElement.width / 2.0;
-    const canvasY = mouseEvent ? mouseEvent.y : this.canvas.nativeElement.height / 2.0;
+    const mousePos: { x: number, y: number } = { x: 0, y: 0 };
+    if (mouseEvent) {
+      mousePos.x = mouseEvent.x;
+      mousePos.y = mouseEvent.y;
+    } else {
+      if (this.lastMousePosition) {
+        mousePos.x = this.lastMousePosition.x;
+        mousePos.y = this.lastMousePosition.y;
+      } else {
+        mousePos.x = this.canvas.nativeElement.width / 2.0;
+        mousePos.y = this.canvas.nativeElement.height / 2.0;
+      }
+    }
 
     this.clear();
     this.context.fillStyle = this.background;
     this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     this.context.save();
-    this.context.translate(canvasX, canvasY);
+    this.context.translate(mousePos.x, mousePos.y);
     this.context.scale(scaleH, scaleV);
     this.context.rotate(this.degreeToRad(this.currentAngle));
     this.context.filter = `brightness(${(this.brightness2)}%) contrast(${this.contrast2}%) saturate(${this.saturate2}%) grayscale(${this.grayscale2}%)`;
@@ -268,7 +282,7 @@ export class CanvasService {
     this.currentAngle = 0;
     this.flipHorizontal = false;
     this.flipVertical = false;
-    this.selectedCropSetting = undefined;
+    this.selectedCropSetting = null;
     this.history = [];
     this.thereHistory = [];
     this.brightness = this.brightness2 = 100;
@@ -286,7 +300,6 @@ export class CanvasService {
   pushHistory(operationType: string, operation: any) {
     this.thereHistory = [];
     this.history.push({ type: operationType, operation });
-    console.log(this.history);
   }
 
   goBack() {

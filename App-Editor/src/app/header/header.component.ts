@@ -19,18 +19,16 @@ export class HeaderComponent extends ComponentBase implements OnInit {
   }
 
   newFile() {
-    if (confirm('rly?')) {
-      const file = document.createElement('input');
-      file.type = 'file';
+    const file = document.createElement('input');
+    file.type = 'file';
 
-      file.onchange = _ => {
-        if (file.files && file.files.length > 0 && file.files[0]) {
-          this.canvasService.resetHistory(false);
-          this.canvasService.loadImage(file.files[0]);
-        }
-      };
+    file.onchange = _ => {
+      if (file.files && file.files.length > 0 && file.files[0]) {
+        this.canvasService.resetHistory(false);
+        this.canvasService.loadImage(file.files[0]);
+      }
+    };
 
-      file.click();
-    }
+    file.click();
   }
 }

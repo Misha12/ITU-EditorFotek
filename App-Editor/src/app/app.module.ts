@@ -19,7 +19,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { CanvasService } from './CanvasService';
 import { DragDropDirective } from './drag-drop.directive';
 import { UploadFileComponent } from './upload-file/upload-file.component';
-import { DialogueBoxComponent } from './dialogue-box/dialogue-box.component';
 
 @NgModule({
   declarations: [
@@ -35,8 +34,7 @@ import { DialogueBoxComponent } from './dialogue-box/dialogue-box.component';
     RotateToolsComponent,
     CropToolsComponent,
     DragDropDirective,
-    UploadFileComponent,
-    DialogueBoxComponent
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,

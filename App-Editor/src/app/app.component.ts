@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentBase } from './component.base';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,20 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 })
 export class AppComponent extends ComponentBase {
   constructor(
-    protected deviceDetection: DeviceDetectorService
+    protected deviceDetection: DeviceDetectorService,
+    private router: Router
   ) {
     super(deviceDetection);
+
+    const loc = ((url) => {
+      const a = document.createElement('a');
+      a.href = url;
+      return a.pathname;
+    })(location.href);
+
+    if (loc !== '/') {
+      location.href = '/';
+    }
   }
 
   title = 'App-Editor';

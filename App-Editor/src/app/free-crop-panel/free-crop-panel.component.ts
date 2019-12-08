@@ -60,7 +60,7 @@ export class FreeCropPanelComponent extends ComponentBase implements OnInit {
       ratioX: undefined,
       ratioY: undefined,
       width: parseFloat(this.width),
-      isActive: true,
+      isActive: false,
       desc: null
     };
 

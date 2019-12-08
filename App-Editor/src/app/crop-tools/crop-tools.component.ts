@@ -22,13 +22,15 @@ export interface CropSetting {
   styleUrls: ['./crop-tools.component.scss']
 })
 export class CropToolsComponent extends ComponentBase implements OnInit {
+  isCustomSelected = false;
+
   settings: CropSetting[] = [
     // tslint:disable-next-line: max-line-length
     { id: 'facebook_profile', name: 'Facebook - Profilová', desc: 'Profilová fotografie na Facebook', ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false },
     // tslint:disable-next-line: max-line-length
-    { id: 'facebook_header', name: 'Facebook - Záhlaví', desc: 'Záhlaví na facebook', ratioX: 1, ratioY: 2.7, height: 0, width: 0, isActive: false, custom: false },
-    { id: 'isic', name: 'ISIC', desc: 'Průkazové fotogragie - ISIC', ratioX: 5, ratioY: 6, width: 0, height: 0, isActive: false, custom: false },
-    { id: 'usa-passport', name: 'USA - Výzum', desc: null, ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false },
+    { id: 'facebook_header', name: 'Facebook - Záhlaví', desc: 'Záhlaví na Facebook', ratioX: 1, ratioY: 2.7, height: 0, width: 0, isActive: false, custom: false },
+    { id: 'isic', name: 'ISIC', desc: 'Průkazové fotografie - ISIC', ratioX: 5, ratioY: 6, width: 0, height: 0, isActive: false, custom: false },
+    { id: 'usa-passport', name: 'USA - Vízum', desc: null, ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false },
     { id: 'zbrojni-prukaz', name: 'Zbrojní průkaz', desc: null, ratioX: 7, ratioY: 9, height: 0, width: 0, isActive: false, custom: false },
     { id: 'ig-story', name: 'Instagram - Stories', desc: 'Instagramové příběhy', ratioX: 9, ratioY: 16, width: 0, height: 0, isActive: false, custom: false },
     // tslint:disable-next-line: max-line-length
@@ -36,6 +38,10 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
   ];
 
   private selectedSetting: string;
+
+  get customSelected() {
+    return this.isCustomSelected;
+  }
 
   constructor(
     private router: Router,
@@ -45,7 +51,7 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
 
   ngOnInit() {
     this.loadSettings();
-    //setInterval(() => this.loadSettings(), 500);
+    setInterval(() => this.loadSettings(), 500);
   }
 
   loadSettings() {
@@ -63,24 +69,36 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
   }
 
   selectFreeCrop() {
+    this.isCustomSelected = true;
+    if (this.selectedSetting) {
+      this.settings.find(o => o.id === this.selectedSetting).isActive = false;
+    }
+
     this.router.navigate(['/free-crop']);
   }
 
   selectCrop(id: string) {
     const setting = this.settings.find(o => o.id === id);
+    this.isCustomSelected = false;
+    setting.isActive = true;
+
     this.canvasService.renderCropArray(setting);
 
     if (this.selectedSetting) {
       this.settings.find(o => o.id === this.selectedSetting).isActive = false;
+      this.selectedSetting = null;
     }
 
-    setting.isActive = true;
     this.selectedSetting = id;
-
     this.router.navigate(['/crop']);
   }
 
   cancelCrop() {
     this.canvasService.renderCropArray(null);
+    this.isCustomSelected = false;
+    if (this.selectedSetting) {
+      this.settings.find(o => o.id === this.selectedSetting).isActive = false;
+      this.selectedSetting = null;
+    }
   }
 }
