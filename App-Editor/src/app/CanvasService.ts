@@ -4,21 +4,14 @@ import { CropSetting } from './crop-tools/crop-tools.component';
 export interface Size { width: number; height: number; }
 interface Rectangle extends Size { x: number; y: number; }
 
-interface HistoryItem {
-  type: string;
-  operation: CutOperation | RotateOperation | ColorChange | ZoomChange | FlipChange;
-}
-
+interface HistoryItem { type: string; operation: any; }
 interface CutOperation { oldSetting: CropSetting; newSetting: CropSetting; }
 interface RotateOperation { oldAngle: number; newAngle: number; }
-
-interface ColorChange {
-
-}
-
+interface ColorChange { oldColor: string; newColor: string; }
 interface ZoomInfo { text: string; value: number; }
 interface ZoomChange { oldZoomIndex: number; newZoomIndex: number; }
 interface FlipChange { flipType: 'horizontal' | 'vertical'; oldFlipValue: boolean; newFlipValue: boolean; }
+interface FilterChange { oldValue: number; newValue: number; }
 
 @Injectable({
   providedIn: 'root'
@@ -55,9 +48,13 @@ export class CanvasService {
   history: HistoryItem[] = [];
   thereHistory: HistoryItem[] = [];
   brightness = 100;
+  brightness2 = 100;
   contrast = 100;
+  contrast2 = 100;
   saturate = 100;
+  saturate2 = 100;
   background = '#585858';
+  background2 = '#585858';
 
   get currentSize(): Size {
     if (!this.currentImg) { return null; }
@@ -153,7 +150,7 @@ export class CanvasService {
     this.context.translate(canvasX, canvasY);
     this.context.scale(scaleH, scaleV);
     this.context.rotate(this.degreeToRad(this.currentAngle));
-    this.context.filter = `brightness(${(this.brightness)}%) contrast(${this.contrast}%) saturate(${this.saturate}%)`;
+    this.context.filter = `brightness(${(this.brightness2)}%) contrast(${this.contrast2}%) saturate(${this.saturate2}%)`;
 
     this.context.drawImage(this.currentImg, -resolution.width / 2.0, -resolution.height / 2.0, resolution.width, resolution.height);
     this.context.restore();
@@ -260,15 +257,20 @@ export class CanvasService {
     this.selectedCropSetting = undefined;
     this.history = [];
     this.thereHistory = [];
+    this.brightness = this.brightness2 = 100;
+    this.contrast = this.contrast2 = 100;
+    this.saturate = this.saturate2 = 100;
+    this.background = this.background2 = '#585858';
 
     if (redraw) {
       this.drawCurrentImage(undefined);
     }
   }
 
-  pushHistory(operationType: string, operation: RotateOperation | CutOperation | ColorChange | ZoomChange) {
+  pushHistory(operationType: string, operation: any) {
     this.thereHistory = [];
     this.history.push({ type: operationType, operation });
+    console.log(this.history);
   }
 
   goBack() {
@@ -295,6 +297,22 @@ export class CanvasService {
         } else if (op.flipType === 'vertical') {
           this.flipVertical = op.oldFlipValue;
         }
+        this.drawCurrentImage(null);
+        break;
+      case 'brightness':
+        this.brightness = this.brightness2 = (operation.operation as FilterChange).oldValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'contrast':
+        this.contrast = this.contrast2 = (operation.operation as FilterChange).oldValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'saturate':
+        this.saturate = this.saturate2 = (operation.operation as FilterChange).oldValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'color':
+        this.background = this.background2 = (operation.operation as ColorChange).oldColor;
         this.drawCurrentImage(null);
         break;
     }
@@ -331,6 +349,22 @@ export class CanvasService {
         }
         this.drawCurrentImage(null);
         break;
+      case 'brightness':
+        this.brightness = this.brightness2 = (operation.operation as FilterChange).newValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'contrast':
+        this.contrast = this.contrast2 = (operation.operation as FilterChange).newValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'saturate':
+        this.saturate = this.saturate2 = (operation.operation as FilterChange).newValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'color':
+        this.background = this.background2 = (operation.operation as ColorChange).newColor;
+        this.drawCurrentImage(null);
+        break;
     }
 
     this.history.push(operation);
@@ -354,22 +388,34 @@ export class CanvasService {
   }
 
   setBrightness(value: number) {
-    this.brightness = value;
-    this.drawCurrentImage(null);
+    if (value !== this.brightness2) {
+      this.pushHistory('brightness', { newValue: value, oldValue: this.brightness2 } as FilterChange);
+      this.brightness2 = value;
+      this.drawCurrentImage(null);
+    }
   }
 
   setContrast(value: number) {
-    this.contrast = value;
-    this.drawCurrentImage(null);
+    if (value !== this.contrast2) {
+      this.pushHistory('contrast', { newValue: value, oldValue: this.contrast2 } as FilterChange);
+      this.contrast2 = value;
+      this.drawCurrentImage(null);
+    }
   }
 
   setSaturate(value: number) {
-    this.saturate = value;
-    this.drawCurrentImage(null);
+    if (value !== this.saturate2) {
+      this.pushHistory('saturate', { oldValue: this.saturate2, newValue: value } as FilterChange);
+      this.saturate2 = value;
+      this.drawCurrentImage(null);
+    }
   }
 
   setBackground(color: string) {
-    this.background = color;
-    this.drawCurrentImage(null);
+    if (this.background2 !== color) {
+      this.pushHistory('color', { newColor: color, oldColor: this.background2 } as ColorChange);
+      this.background2 = color;
+      this.drawCurrentImage(null);
+    }
   }
 }
