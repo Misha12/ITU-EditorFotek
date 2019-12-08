@@ -19,6 +19,7 @@ export class ToolBarComponent extends ComponentBase implements OnInit {
   ) { super(deviceDetection); }
 
   ngOnInit() {
+    this.selectCrop();
     this.currentZoomInput.nativeElement.addEventListener('mousewheel', (e: WheelEvent) => {
       e.preventDefault();
 
