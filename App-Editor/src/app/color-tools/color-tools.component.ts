@@ -11,7 +11,7 @@ import { CanvasService } from '../CanvasService';
 export class ColorToolsComponent extends ComponentBase implements OnInit {
   constructor(
     protected deviceDetection: DeviceDetectorService,
-    private canvasService: CanvasService
+    public canvasService: CanvasService
   ) { super(deviceDetection); }
 
   ngOnInit() {
