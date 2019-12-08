@@ -29,6 +29,10 @@ app-upload-file{
 	margin-right: 0;
 	min-width: 100px;
 	background: $workplaceBcg;
+	
+	&:hover{
+		cursor: pointer;
+	}
 }
 
 .menu{
