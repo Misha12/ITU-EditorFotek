@@ -4,9 +4,10 @@
     <i class="fas fa-tint" (click)="selectColor()"></i>
     <i class="fas fa-sync-alt" (click)="selectRotate()"></i>
   </div>
-  
+
   <div class= "lower">
-    <i class="fas fa-search-plus"></i>
-    <i class="fas fa-search-minus"></i>
+    <i class="fas fa-search-plus" (click)="canvasService.setZoom('up')"></i>
+    <i class="fas fa-search-minus" (click)="canvasService.setZoom('down')"></i>
+    <input readonly [(ngModel)]="canvasService.currentZoom.text" class="zoomValue" >
   </div>
 </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ComponentBase } from '../component.base';
+import { CanvasService } from '../CanvasService';
 
 @Component({
   selector: 'app-tool-bar',
@@ -11,14 +12,15 @@ import { ComponentBase } from '../component.base';
 export class ToolBarComponent extends ComponentBase implements OnInit {
   constructor(
     private router: Router,
-    protected deviceDetection: DeviceDetectorService
+    protected deviceDetection: DeviceDetectorService,
+    public canvasService: CanvasService
   ) { super(deviceDetection); }
 
   ngOnInit() {
   }
 
   selectCrop() {
-    this.router.navigate(['/free-crop']);
+    this.router.navigate(['/crop']);
   }
 
   selectColor() {

@@ -51,8 +51,12 @@ i{
 	color: $icon;
 	//font-weight: 100;
 
-	&:hover{
+	&:not(.disabled):hover{
 		color: $iconHover;
 		cursor: pointer;
-	}
+  }
+
+  &.disabled {
+    color: $buttonDisabled !important;
+  }
 }

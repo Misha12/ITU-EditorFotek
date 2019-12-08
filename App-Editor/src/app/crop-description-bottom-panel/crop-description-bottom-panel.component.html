@@ -1,7 +1,8 @@
-<div class="content">
+<div class="content" *ngIf="haveCrop">
     <ul>
-        <li>profilová fotografie na Facebook</li>
-        <li>zamknutý poměr 1:1</li>
-        <li>minimální rozlišení 256x256 px</li>
+        <li>{{description}}</li>
+        <li *ngIf="isCustom">Vlastní ořez</li>
+        <li *ngIf="!isCustom">zamknutý poměr {{ratio}}</li>
+        <li *ngIf="isCustom">Rozlišení {{resolution}} px</li>
     </ul>
 </div>

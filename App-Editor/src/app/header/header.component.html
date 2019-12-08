@@ -5,7 +5,7 @@
     <p *ngIf="canvasService.currentSize">Současná velikost: {{canvasService.currentSize.width}} x {{canvasService.currentSize.height}} px</p>
   </div>
   <div class="right">
-    <i class="fas fa-arrow-left"></i>
-    <i class="fas fa-arrow-right"></i>
+    <i class="fas fa-arrow-left" (click)="canvasService.goBack()" [ngClass]="{'disabled': !canvasService.canBack()}"></i>
+    <i class="fas fa-arrow-right" (click)="canvasService.goThere()" [ngClass]="{'disabled': !canvasService.canThere()}"></i>
   </div>
 </div>

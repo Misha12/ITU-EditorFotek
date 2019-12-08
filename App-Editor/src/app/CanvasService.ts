@@ -1,15 +1,17 @@
 import { Injectable, ElementRef } from '@angular/core';
 import { CropSetting } from './crop-tools/crop-tools.component';
 
-export interface Size {
-  width: number;
-  height: number;
-}
+export interface Size { width: number; height: number; }
+interface Rectangle extends Size { x: number; y: number; }
 
-interface Rectangle extends Size {
-  x: number;
-  y: number;
-}
+interface HistoryItem { type: string; operation: any; }
+interface CutOperation { oldSetting: CropSetting; newSetting: CropSetting; }
+interface RotateOperation { oldAngle: number; newAngle: number; }
+interface ColorChange { oldColor: string; newColor: string; }
+interface ZoomInfo { text: string; value: number; }
+interface ZoomChange { oldZoomIndex: number; newZoomIndex: number; }
+interface FlipChange { flipType: 'horizontal' | 'vertical'; oldFlipValue: boolean; newFlipValue: boolean; }
+interface FilterChange { oldValue: number; newValue: number; }
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,22 @@ export class CanvasService {
   canvas: ElementRef<HTMLCanvasElement>;
   margin = 50;
 
+  zoomValues: ZoomInfo[] = [
+    { text: '10%', value: 0.1 },
+    { text: '20%', value: 0.2 },
+    { text: '30%', value: 0.3 },
+    { text: '40%', value: 0.4 },
+    { text: '50%', value: 0.5 },
+    { text: '100%', value: 1.0 },
+    { text: '200%', value: 2.0 },
+    { text: '300%', value: 3.0 },
+    { text: '400%', value: 4.0 },
+    { text: '500%', value: 5.0 },
+    { text: '1000%', value: 10.0 },
+  ];
+
+  private selectedZoomvalue = 5;
+
   imageFile: File;
   currentImg: HTMLImageElement;
   currentAngle = 0;
@@ -26,6 +44,17 @@ export class CanvasService {
   flipVertical = false;
   canMove = false;
   selectedCropSetting: CropSetting;
+
+  history: HistoryItem[] = [];
+  thereHistory: HistoryItem[] = [];
+  brightness = 100;
+  brightness2 = 100;
+  contrast = 100;
+  contrast2 = 100;
+  saturate = 100;
+  saturate2 = 100;
+  background = '#585858';
+  background2 = '#585858';
 
   get currentSize(): Size {
     if (!this.currentImg) { return null; }
@@ -104,17 +133,24 @@ export class CanvasService {
   drawCurrentImage(mouseEvent: MouseEvent) {
     const resolution = this.computeResolution(this.currentImg);
 
-    const scaleH = this.flipHorizontal ? -1 : 1;
-    const scaleV = this.flipVertical ? -1 : 1;
+    let scaleH = this.flipHorizontal ? -1 : 1;
+    let scaleV = this.flipVertical ? -1 : 1;
+
+    const zoomValue = this.zoomValues[this.selectedZoomvalue];
+    scaleH *= zoomValue.value;
+    scaleV *= zoomValue.value;
 
     const canvasX = mouseEvent ? mouseEvent.x : this.canvas.nativeElement.width / 2.0;
     const canvasY = mouseEvent ? mouseEvent.y : this.canvas.nativeElement.height / 2.0;
 
     this.clear();
+    this.context.fillStyle = this.background;
+    this.context.fillRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height);
     this.context.save();
     this.context.translate(canvasX, canvasY);
     this.context.scale(scaleH, scaleV);
     this.context.rotate(this.degreeToRad(this.currentAngle));
+    this.context.filter = `brightness(${(this.brightness2)}%) contrast(${this.contrast2}%) saturate(${this.saturate2}%)`;
 
     this.context.drawImage(this.currentImg, -resolution.width / 2.0, -resolution.height / 2.0, resolution.width, resolution.height);
     this.context.restore();
@@ -145,6 +181,12 @@ export class CanvasService {
       ang = -180 + (ang - 180);
     }
 
+    const logItem: RotateOperation = {
+      newAngle: ang,
+      oldAngle: this.currentAngle
+    };
+
+    this.pushHistory('rotate', logItem);
     this.currentAngle = ang;
     this.drawCurrentImage(null);
     return this.currentAngle;
@@ -152,8 +194,10 @@ export class CanvasService {
 
   setFlip(mode: 'horizontal' | 'vertical') {
     if (mode === 'horizontal') {
+      this.pushHistory('flip', { flipType: mode, oldFlipValue: this.flipHorizontal, newFlipValue: !this.flipHorizontal });
       this.flipHorizontal = !this.flipHorizontal;
     } else if (mode === 'vertical') {
+      this.pushHistory('flip', { flipType: mode, oldFlipValue: this.flipVertical, newFlipValue: !this.flipVertical });
       this.flipVertical = !this.flipVertical;
     }
 
@@ -162,6 +206,7 @@ export class CanvasService {
 
   renderCropArray(setting: CropSetting) {
     if (!this.currentImg) { return; }
+    this.pushHistory('crop', { oldSetting: this.selectedCropSetting, newSetting: setting });
     this.selectedCropSetting = setting;
     this.drawCurrentImage(null);
   }
@@ -210,7 +255,167 @@ export class CanvasService {
     this.flipHorizontal = false;
     this.flipVertical = false;
     this.selectedCropSetting = undefined;
+    this.history = [];
+    this.thereHistory = [];
+    this.brightness = this.brightness2 = 100;
+    this.contrast = this.contrast2 = 100;
+    this.saturate = this.saturate2 = 100;
+    this.background = this.background2 = '#585858';
 
-    this.drawCurrentImage(undefined);
+    if (redraw) {
+      this.drawCurrentImage(undefined);
+    }
+  }
+
+  pushHistory(operationType: string, operation: any) {
+    this.thereHistory = [];
+    this.history.push({ type: operationType, operation });
+    console.log(this.history);
+  }
+
+  goBack() {
+    if (!this.canBack()) { return; }
+    const operation = this.history.pop();
+
+    switch (operation.type) {
+      case 'rotate':
+        this.currentAngle = (operation.operation as RotateOperation).oldAngle;
+        this.drawCurrentImage(null);
+        break;
+      case 'crop':
+        this.selectedCropSetting = (operation.operation as CutOperation).oldSetting;
+        this.drawCurrentImage(null);
+        break;
+      case 'zoom':
+        this.selectedZoomvalue = (operation.operation as ZoomChange).oldZoomIndex;
+        this.drawCurrentImage(null);
+        break;
+      case 'flip':
+        const op = operation.operation as FlipChange;
+        if (op.flipType === 'horizontal') {
+          this.flipHorizontal = op.oldFlipValue;
+        } else if (op.flipType === 'vertical') {
+          this.flipVertical = op.oldFlipValue;
+        }
+        this.drawCurrentImage(null);
+        break;
+      case 'brightness':
+        this.brightness = this.brightness2 = (operation.operation as FilterChange).oldValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'contrast':
+        this.contrast = this.contrast2 = (operation.operation as FilterChange).oldValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'saturate':
+        this.saturate = this.saturate2 = (operation.operation as FilterChange).oldValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'color':
+        this.background = this.background2 = (operation.operation as ColorChange).oldColor;
+        this.drawCurrentImage(null);
+        break;
+    }
+
+    this.thereHistory.push(operation);
+  }
+
+  canBack() { return this.history.length > 0; }
+  canThere() { return this.thereHistory.length > 0; }
+
+  goThere() {
+    if (!this.canThere()) { return; }
+    const operation = this.thereHistory.pop();
+
+    switch (operation.type) {
+      case 'rotate':
+        this.currentAngle = (operation.operation as RotateOperation).newAngle;
+        this.drawCurrentImage(null);
+        break;
+      case 'crop':
+        this.selectedCropSetting = (operation.operation as CutOperation).newSetting;
+        this.drawCurrentImage(null);
+        break;
+      case 'zoom':
+        this.selectedZoomvalue = (operation.operation as ZoomChange).newZoomIndex;
+        this.drawCurrentImage(null);
+        break;
+      case 'flip':
+        const op = operation.operation as FlipChange;
+        if (op.flipType === 'horizontal') {
+          this.flipHorizontal = op.newFlipValue;
+        } else if (op.flipType === 'vertical') {
+          this.flipVertical = op.newFlipValue;
+        }
+        this.drawCurrentImage(null);
+        break;
+      case 'brightness':
+        this.brightness = this.brightness2 = (operation.operation as FilterChange).newValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'contrast':
+        this.contrast = this.contrast2 = (operation.operation as FilterChange).newValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'saturate':
+        this.saturate = this.saturate2 = (operation.operation as FilterChange).newValue;
+        this.drawCurrentImage(null);
+        break;
+      case 'color':
+        this.background = this.background2 = (operation.operation as ColorChange).newColor;
+        this.drawCurrentImage(null);
+        break;
+    }
+
+    this.history.push(operation);
+  }
+
+  setZoom(mode: 'up' | 'down') {
+    switch (mode) {
+      case 'up':
+        this.pushHistory('zoom', { oldZoomIndex: this.selectedZoomvalue, newZoomIndex: ++this.selectedZoomvalue });
+        this.drawCurrentImage(null);
+        break;
+      case 'down':
+        this.pushHistory('zoom', { oldZoomIndex: this.selectedZoomvalue, newZoomIndex: --this.selectedZoomvalue });
+        this.drawCurrentImage(null);
+        break;
+    }
+  }
+
+  get currentZoom() {
+    return this.zoomValues[this.selectedZoomvalue];
+  }
+
+  setBrightness(value: number) {
+    if (value !== this.brightness2) {
+      this.pushHistory('brightness', { newValue: value, oldValue: this.brightness2 } as FilterChange);
+      this.brightness2 = value;
+      this.drawCurrentImage(null);
+    }
+  }
+
+  setContrast(value: number) {
+    if (value !== this.contrast2) {
+      this.pushHistory('contrast', { newValue: value, oldValue: this.contrast2 } as FilterChange);
+      this.contrast2 = value;
+      this.drawCurrentImage(null);
+    }
+  }
+
+  setSaturate(value: number) {
+    if (value !== this.saturate2) {
+      this.pushHistory('saturate', { oldValue: this.saturate2, newValue: value } as FilterChange);
+      this.saturate2 = value;
+      this.drawCurrentImage(null);
+    }
+  }
+
+  setBackground(color: string) {
+    if (this.background2 !== color) {
+      this.pushHistory('color', { newColor: color, oldColor: this.background2 } as ColorChange);
+      this.background2 = color;
+      this.drawCurrentImage(null);
+    }
   }
 }
