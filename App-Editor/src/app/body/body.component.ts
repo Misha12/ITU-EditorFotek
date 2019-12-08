@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent extends ComponentBase implements OnInit {
-  @ViewChild('canvas') canvas: ElementRef<HTMLCanvasElement>;
+  @ViewChild('canvas', { static : true }) canvas: ElementRef<HTMLCanvasElement>;
 
   constructor(
     protected deviceDetector: DeviceDetectorService,
