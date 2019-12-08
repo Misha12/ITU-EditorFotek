@@ -83,7 +83,7 @@ export class CanvasService {
       this.canMove = true;
     };
 
-    if (resize) {
+    if (resize && this.currentImg) {
       this.drawCurrentImage(null);
     } else {
       this.selectedCropSetting = null;
