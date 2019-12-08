@@ -42,7 +42,8 @@ export class FreeCropPanelComponent extends ComponentBase implements OnInit {
       name: this.name,
       ratioX: 0,
       ratioY: 0,
-      width: parseFloat(this.width)
+      width: parseFloat(this.width),
+      desc: null
     };
 
     this.canvasService.renderCropArray(setting);
@@ -59,7 +60,8 @@ export class FreeCropPanelComponent extends ComponentBase implements OnInit {
       ratioX: undefined,
       ratioY: undefined,
       width: parseFloat(this.width),
-      isActive: true
+      isActive: true,
+      desc: null
     };
 
     const jsonData = JSON.parse(localStorage.getItem('crop_settings')) as CropSetting[];

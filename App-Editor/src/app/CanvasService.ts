@@ -11,6 +11,25 @@ interface Rectangle extends Size {
   y: number;
 }
 
+interface HistoryItem {
+  type: string;
+  operation: CutOperation | RotateOperation | ColorChange;
+}
+
+interface CutOperation {
+  oldSetting: CropSetting;
+  newSetting: CropSetting;
+}
+
+interface RotateOperation {
+  oldAngle: number;
+  newAngle: number;
+}
+
+interface ColorChange {
+
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +45,9 @@ export class CanvasService {
   flipVertical = false;
   canMove = false;
   selectedCropSetting: CropSetting;
+
+  history: HistoryItem[] = [];
+  thereHistory: HistoryItem[] = [];
 
   get currentSize(): Size {
     if (!this.currentImg) { return null; }
@@ -119,6 +141,7 @@ export class CanvasService {
     this.context.drawImage(this.currentImg, -resolution.width / 2.0, -resolution.height / 2.0, resolution.width, resolution.height);
     this.context.restore();
 
+    console.log(this.selectedCropSetting);
     if (this.selectedCropSetting) {
       const cropResolution = this.calculateCropResolution();
 
@@ -145,6 +168,12 @@ export class CanvasService {
       ang = -180 + (ang - 180);
     }
 
+    const logItem: RotateOperation = {
+      newAngle: ang,
+      oldAngle: this.currentAngle
+    };
+
+    this.pushHistory('rotate', logItem);
     this.currentAngle = ang;
     this.drawCurrentImage(null);
     return this.currentAngle;
@@ -162,6 +191,7 @@ export class CanvasService {
 
   renderCropArray(setting: CropSetting) {
     if (!this.currentImg) { return; }
+    this.pushHistory('crop', { oldSetting: this.selectedCropSetting, newSetting: setting });
     this.selectedCropSetting = setting;
     this.drawCurrentImage(null);
   }
@@ -210,7 +240,55 @@ export class CanvasService {
     this.flipHorizontal = false;
     this.flipVertical = false;
     this.selectedCropSetting = undefined;
+    this.history = [];
+    this.thereHistory = [];
 
     this.drawCurrentImage(undefined);
+  }
+
+  pushHistory(operationType: string, operation: RotateOperation | CutOperation | ColorChange) {
+    this.thereHistory = [];
+    this.history.push({ type: operationType, operation });
+    console.log(this.history);
+  }
+
+  goBack() {
+    if (!this.canBack()) { return; }
+    const operation = this.history.pop();
+
+    // TODO: Push to another for go there.
+    switch (operation.type) {
+      case 'rotate':
+        this.currentAngle = (operation.operation as RotateOperation).oldAngle;
+        this.drawCurrentImage(null);
+        break;
+      case 'crop':
+        this.selectedCropSetting = (operation.operation as CutOperation).oldSetting;
+        this.drawCurrentImage(null);
+        break;
+    }
+
+    this.thereHistory.push(operation);
+  }
+
+  canBack() { return this.history.length > 0; }
+  canThere() { return this.thereHistory.length > 0; }
+
+  goThere() {
+    if (!this.canThere()) { return; }
+    const operation = this.thereHistory.pop();
+
+    switch (operation.type) {
+      case 'rotate':
+        this.currentAngle = (operation.operation as RotateOperation).newAngle;
+        this.drawCurrentImage(null);
+        break;
+      case 'crop':
+        this.selectedCropSetting = (operation.operation as CutOperation).newSetting;
+        this.drawCurrentImage(null);
+        break;
+    }
+
+    this.history.push(operation);
   }
 }
