@@ -5,9 +5,10 @@
     <i class="fas fa-sync-alt" (click)="selectRotate()"></i>
   </div>
 
-  <div class= "lower">
+  <div class="lower">
     <i class="fas fa-search-plus" (click)="canvasService.setZoom('up')"></i>
     <i class="fas fa-search-minus" (click)="canvasService.setZoom('down')"></i>
-    <input readonly [(ngModel)]="canvasService.currentZoom.text" class="zoomValue" >
+    <input [(ngModel)]="canvasService.currentZoomText" class="zoomValue"
+      (ngModelChange)="canvasService.setZoom('custom', $event/100)" min="0" max="1000" step="5" type="number" #currentZoomInput>
   </div>
 </div>
