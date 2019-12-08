@@ -2,19 +2,19 @@
   <div class="upper">
       <div class="item">
           <p>Jas</p>
-          <input type="range" min="0" max="100" [(ngModel)]="canvasService.brightness" (ngModelChange)="canvasService.setBrightness($event)" class="slider">
+          <input type="range" min="0" max="200" [(ngModel)]="canvasService.brightness" (ngModelChange)="canvasService.setBrightness($event)" class="slider">
       </div>
       <div class="item">
           <p>Kontrast</p>
-          <input type="range" min="0" max="100" [(ngModel)]="canvasService.contrast" (ngModelChange)="canvasService.setContrast($event)" class="slider">
+          <input type="range" min="0" max="200" [(ngModel)]="canvasService.contrast" (ngModelChange)="canvasService.setContrast($event)" class="slider">
       </div>
       <div class="item">
           <p>Saturace</p>
-          <input type="range" min="0" max="100" [(ngModel)]="canvasService.saturate" (ngModelChange)="canvasService.setSaturate($event)" class="slider">
+          <input type="range" min="0" max="200" [(ngModel)]="canvasService.saturate" (ngModelChange)="canvasService.setSaturate($event)" class="slider">
       </div>
       <div class="item">
         <p>Úroveň šedi</p>
-        <input type="range" min="0" max="100" value="50" class="slider">
+        <input type="range" min="0" max="100" [(ngModel)]="canvasService.grayscale" (ngModelChange)="canvasService.setGrayscale($event)" class="slider">
       </div>
   </div>
   <div class="lower">
