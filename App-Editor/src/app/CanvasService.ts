@@ -1,44 +1,24 @@
 import { Injectable, ElementRef } from '@angular/core';
 import { CropSetting } from './crop-tools/crop-tools.component';
 
-export interface Size {
-  width: number;
-  height: number;
-}
-
-interface Rectangle extends Size {
-  x: number;
-  y: number;
-}
+export interface Size { width: number; height: number; }
+interface Rectangle extends Size { x: number; y: number; }
 
 interface HistoryItem {
   type: string;
-  operation: CutOperation | RotateOperation | ColorChange | ZoomChange;
+  operation: CutOperation | RotateOperation | ColorChange | ZoomChange | FlipChange;
 }
 
-interface CutOperation {
-  oldSetting: CropSetting;
-  newSetting: CropSetting;
-}
-
-interface RotateOperation {
-  oldAngle: number;
-  newAngle: number;
-}
+interface CutOperation { oldSetting: CropSetting; newSetting: CropSetting; }
+interface RotateOperation { oldAngle: number; newAngle: number; }
 
 interface ColorChange {
 
 }
 
-interface ZoomInfo {
-  text: string;
-  value: number;
-}
-
-interface ZoomChange {
-  oldZoomIndex: number;
-  newZoomIndex: number;
-}
+interface ZoomInfo { text: string; value: number; }
+interface ZoomChange { oldZoomIndex: number; newZoomIndex: number; }
+interface FlipChange { flipType: 'horizontal' | 'vertical'; oldFlipValue: boolean; newFlipValue: boolean; }
 
 @Injectable({
   providedIn: 'root'
@@ -211,8 +191,10 @@ export class CanvasService {
 
   setFlip(mode: 'horizontal' | 'vertical') {
     if (mode === 'horizontal') {
+      this.pushHistory('flip', { flipType: mode, oldFlipValue: this.flipHorizontal, newFlipValue: !this.flipHorizontal });
       this.flipHorizontal = !this.flipHorizontal;
     } else if (mode === 'vertical') {
+      this.pushHistory('flip', { flipType: mode, oldFlipValue: this.flipVertical, newFlipValue: !this.flipVertical });
       this.flipVertical = !this.flipVertical;
     }
 
@@ -300,6 +282,15 @@ export class CanvasService {
         this.selectedZoomvalue = (operation.operation as ZoomChange).oldZoomIndex;
         this.drawCurrentImage(null);
         break;
+      case 'flip':
+        const op = operation.operation as FlipChange;
+        if (op.flipType === 'horizontal') {
+          this.flipHorizontal = op.oldFlipValue;
+        } else if (op.flipType === 'vertical') {
+          this.flipVertical = op.oldFlipValue;
+        }
+        this.drawCurrentImage(null);
+        break;
     }
 
     this.thereHistory.push(operation);
@@ -323,6 +314,15 @@ export class CanvasService {
         break;
       case 'zoom':
         this.selectedZoomvalue = (operation.operation as ZoomChange).newZoomIndex;
+        this.drawCurrentImage(null);
+        break;
+      case 'flip':
+        const op = operation.operation as FlipChange;
+        if (op.flipType === 'horizontal') {
+          this.flipHorizontal = op.newFlipValue;
+        } else if (op.flipType === 'vertical') {
+          this.flipVertical = op.newFlipValue;
+        }
         this.drawCurrentImage(null);
         break;
     }
