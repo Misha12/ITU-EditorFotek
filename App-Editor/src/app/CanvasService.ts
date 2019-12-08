@@ -9,7 +9,7 @@ interface CutOperation { oldSetting: CropSetting; newSetting: CropSetting; }
 interface RotateOperation { oldAngle: number; newAngle: number; }
 interface ColorChange { oldColor: string; newColor: string; }
 interface ZoomInfo { text: string; value: number; }
-interface ZoomChange { oldZoomIndex: number; newZoomIndex: number; }
+interface ZoomChange { oldZoom: ZoomInfo; newZoom: ZoomInfo; }
 interface FlipChange { flipType: 'horizontal' | 'vertical'; oldFlipValue: boolean; newFlipValue: boolean; }
 interface FilterChange { oldValue: number; newValue: number; }
 
@@ -21,21 +21,7 @@ export class CanvasService {
   canvas: ElementRef<HTMLCanvasElement>;
   margin = 50;
 
-  zoomValues: ZoomInfo[] = [
-    { text: '10%', value: 0.1 },
-    { text: '20%', value: 0.2 },
-    { text: '30%', value: 0.3 },
-    { text: '40%', value: 0.4 },
-    { text: '50%', value: 0.5 },
-    { text: '100%', value: 1.0 },
-    { text: '200%', value: 2.0 },
-    { text: '300%', value: 3.0 },
-    { text: '400%', value: 4.0 },
-    { text: '500%', value: 5.0 },
-    { text: '1000%', value: 10.0 },
-  ];
-
-  private selectedZoomvalue = 5;
+  actualZoom: ZoomInfo = { text: '100', value: 1 };
 
   imageFile: File;
   currentImg: HTMLImageElement;
@@ -138,9 +124,8 @@ export class CanvasService {
     let scaleH = this.flipHorizontal ? -1 : 1;
     let scaleV = this.flipVertical ? -1 : 1;
 
-    const zoomValue = this.zoomValues[this.selectedZoomvalue];
-    scaleH *= zoomValue.value;
-    scaleV *= zoomValue.value;
+    scaleH *= this.actualZoom.value;
+    scaleV *= this.actualZoom.value;
 
     const canvasX = mouseEvent ? mouseEvent.x : this.canvas.nativeElement.width / 2.0;
     const canvasY = mouseEvent ? mouseEvent.y : this.canvas.nativeElement.height / 2.0;
@@ -268,6 +253,7 @@ export class CanvasService {
     this.saturate = this.saturate2 = 100;
     this.background = this.background2 = '#585858';
     this.grayscale = this.grayscale2 = 0;
+    this.actualZoom = { text: '100', value: 1 };
 
     if (redraw) {
       this.drawCurrentImage(undefined);
@@ -294,7 +280,7 @@ export class CanvasService {
         this.drawCurrentImage(null);
         break;
       case 'zoom':
-        this.selectedZoomvalue = (operation.operation as ZoomChange).oldZoomIndex;
+        this.actualZoom = (operation.operation as ZoomChange).oldZoom;
         this.drawCurrentImage(null);
         break;
       case 'flip':
@@ -348,7 +334,7 @@ export class CanvasService {
         this.drawCurrentImage(null);
         break;
       case 'zoom':
-        this.selectedZoomvalue = (operation.operation as ZoomChange).newZoomIndex;
+        this.actualZoom = (operation.operation as ZoomChange).newZoom;
         this.drawCurrentImage(null);
         break;
       case 'flip':
@@ -385,22 +371,36 @@ export class CanvasService {
     this.history.push(operation);
   }
 
-  setZoom(mode: 'up' | 'down') {
+  setZoom(mode: 'up' | 'down' | 'custom', value?: number) {
     switch (mode) {
       case 'up':
-        this.pushHistory('zoom', { oldZoomIndex: this.selectedZoomvalue, newZoomIndex: ++this.selectedZoomvalue });
+        const newValue = this.actualZoom.value + 0.1;
+        const newZoomData: ZoomInfo = { text: parseInt((newValue * 100).toString(), 10).toString(), value: newValue };
+        this.pushHistory('zoom', { oldZoom: this.actualZoom, newZoom: newZoomData });
+        this.actualZoom = newZoomData;
         this.drawCurrentImage(null);
         break;
       case 'down':
-        this.pushHistory('zoom', { oldZoomIndex: this.selectedZoomvalue, newZoomIndex: --this.selectedZoomvalue });
+        const newValueDown = this.actualZoom.value - 0.1;
+        const newDownZoomData: ZoomInfo = { text: parseInt((newValueDown * 100).toString(), 10).toString(), value: newValueDown };
+        this.pushHistory('zoom', { oldZoom: this.actualZoom, newZoom: newDownZoomData });
+        this.actualZoom = newDownZoomData;
+        this.drawCurrentImage(null);
+        break;
+      case 'custom':
+        const customZoomData: ZoomInfo = { text: parseInt((value * 100).toString(), 10).toString(), value };
+        this.pushHistory('zoom', { oldZoom: this.actualZoom, newZoom: customZoomData });
+        this.actualZoom = customZoomData;
         this.drawCurrentImage(null);
         break;
     }
   }
 
   get currentZoom() {
-    return this.zoomValues[this.selectedZoomvalue];
+    return this.actualZoom;
   }
+
+  get currentZoomText() { return this.actualZoom.text; }
 
   setBrightness(value: number) {
     if (value !== this.brightness2) {
