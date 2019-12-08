@@ -13,7 +13,7 @@ interface Rectangle extends Size {
 
 interface HistoryItem {
   type: string;
-  operation: CutOperation | RotateOperation | ColorChange;
+  operation: CutOperation | RotateOperation | ColorChange | ZoomChange;
 }
 
 interface CutOperation {
@@ -30,6 +30,16 @@ interface ColorChange {
 
 }
 
+interface ZoomInfo {
+  text: string;
+  value: number;
+}
+
+interface ZoomChange {
+  oldZoomIndex: number;
+  newZoomIndex: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,6 +47,22 @@ export class CanvasService {
   context: CanvasRenderingContext2D;
   canvas: ElementRef<HTMLCanvasElement>;
   margin = 50;
+
+  zoomValues: ZoomInfo[] = [
+    { text: '10%', value: 0.1 },
+    { text: '20%', value: 0.2 },
+    { text: '30%', value: 0.3 },
+    { text: '40%', value: 0.4 },
+    { text: '50%', value: 0.5 },
+    { text: '100%', value: 1.0 },
+    { text: '200%', value: 2.0 },
+    { text: '300%', value: 3.0 },
+    { text: '400%', value: 4.0 },
+    { text: '500%', value: 5.0 },
+    { text: '1000%', value: 10.0 },
+  ];
+
+  private selectedZoomvalue = 5;
 
   imageFile: File;
   currentImg: HTMLImageElement;
@@ -126,8 +152,13 @@ export class CanvasService {
   drawCurrentImage(mouseEvent: MouseEvent) {
     const resolution = this.computeResolution(this.currentImg);
 
-    const scaleH = this.flipHorizontal ? -1 : 1;
-    const scaleV = this.flipVertical ? -1 : 1;
+    let scaleH = this.flipHorizontal ? -1 : 1;
+    let scaleV = this.flipVertical ? -1 : 1;
+
+    const zoomValue = this.zoomValues[this.selectedZoomvalue];
+
+    scaleH *= zoomValue.value;
+    scaleV *= zoomValue.value;
 
     const canvasX = mouseEvent ? mouseEvent.x : this.canvas.nativeElement.width / 2.0;
     const canvasY = mouseEvent ? mouseEvent.y : this.canvas.nativeElement.height / 2.0;
@@ -141,7 +172,6 @@ export class CanvasService {
     this.context.drawImage(this.currentImg, -resolution.width / 2.0, -resolution.height / 2.0, resolution.width, resolution.height);
     this.context.restore();
 
-    console.log(this.selectedCropSetting);
     if (this.selectedCropSetting) {
       const cropResolution = this.calculateCropResolution();
 
@@ -243,20 +273,20 @@ export class CanvasService {
     this.history = [];
     this.thereHistory = [];
 
-    this.drawCurrentImage(undefined);
+    if (redraw) {
+      this.drawCurrentImage(undefined);
+    }
   }
 
-  pushHistory(operationType: string, operation: RotateOperation | CutOperation | ColorChange) {
+  pushHistory(operationType: string, operation: RotateOperation | CutOperation | ColorChange | ZoomChange) {
     this.thereHistory = [];
     this.history.push({ type: operationType, operation });
-    console.log(this.history);
   }
 
   goBack() {
     if (!this.canBack()) { return; }
     const operation = this.history.pop();
 
-    // TODO: Push to another for go there.
     switch (operation.type) {
       case 'rotate':
         this.currentAngle = (operation.operation as RotateOperation).oldAngle;
@@ -264,6 +294,10 @@ export class CanvasService {
         break;
       case 'crop':
         this.selectedCropSetting = (operation.operation as CutOperation).oldSetting;
+        this.drawCurrentImage(null);
+        break;
+      case 'zoom':
+        this.selectedZoomvalue = (operation.operation as ZoomChange).oldZoomIndex;
         this.drawCurrentImage(null);
         break;
     }
@@ -287,8 +321,29 @@ export class CanvasService {
         this.selectedCropSetting = (operation.operation as CutOperation).newSetting;
         this.drawCurrentImage(null);
         break;
+      case 'zoom':
+        this.selectedZoomvalue = (operation.operation as ZoomChange).newZoomIndex;
+        this.drawCurrentImage(null);
+        break;
     }
 
     this.history.push(operation);
+  }
+
+  setZoom(mode: 'up' | 'down') {
+    switch (mode) {
+      case 'up':
+        this.pushHistory('zoom', { oldZoomIndex: this.selectedZoomvalue, newZoomIndex: ++this.selectedZoomvalue });
+        this.drawCurrentImage(null);
+        break;
+      case 'down':
+        this.pushHistory('zoom', { oldZoomIndex: this.selectedZoomvalue, newZoomIndex: --this.selectedZoomvalue });
+        this.drawCurrentImage(null);
+        break;
+    }
+  }
+
+  get currentZoom() {
+    return this.zoomValues[this.selectedZoomvalue];
   }
 }
