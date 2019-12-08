@@ -69,6 +69,29 @@ export class CanvasService {
       this.canMove = true;
     };
 
+    this.canvas.nativeElement.addEventListener('mousewheel', (e: WheelEvent) => {
+      e.preventDefault();
+
+      const increment = 5;
+      const max = 1000;
+      const min = 0;
+      let val = this.actualZoom.value * 100;
+
+      if (isNaN(val)) {
+        val = 0;
+      }
+
+      if (e.deltaY < 0) {
+        if (val + increment <= max) {
+          this.setZoom('custom', (val + increment) / 100);
+        }
+      } else {
+        if (val - increment >= min) {
+          this.setZoom('custom', (val - increment) / 100);
+        }
+      }
+    });
+
     if (resize && this.currentImg) {
       this.drawCurrentImage(null);
     } else {
