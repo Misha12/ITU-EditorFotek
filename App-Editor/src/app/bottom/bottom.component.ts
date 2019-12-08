@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ComponentBase } from '../component.base';
+import { CanvasService } from '../CanvasService';
 
 export enum ModeType {
   crop,
@@ -21,7 +22,8 @@ export class BottomComponent extends ComponentBase implements OnInit {
 
   constructor(
     router: Router,
-    deviceDetection: DeviceDetectorService
+    deviceDetection: DeviceDetectorService,
+    private canvasService: CanvasService
   ) {
     super(deviceDetection);
 
@@ -46,6 +48,18 @@ export class BottomComponent extends ComponentBase implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  saveImage() {
+    const element = document.createElement('a');
+    element.download = 'Image.png';
+    element.href = this.canvasService.bitmapImage;
+    element.click();
+  }
+
+  printImage() {
+    const win = window.open();
+    win.document.write(`<img src="${this.canvasService.bitmapImage}" />`);
   }
 
 }

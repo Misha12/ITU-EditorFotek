@@ -464,4 +464,8 @@ export class CanvasService {
       this.drawCurrentImage(null);
     }
   }
+
+  get bitmapImage() {
+    return this.canvas.nativeElement.toDataURL('image/png', 1.0);
+  }
 }
