@@ -38,8 +38,8 @@ export class BottomComponent extends ComponentBase implements OnInit {
             this.mode = ModeType.color;
             break;
           case '/free-crop':
-                this.mode = ModeType.freecrop;
-                break;
+            this.mode = ModeType.freecrop;
+            break;
           default:
             this.mode = ModeType.crop;
             break;

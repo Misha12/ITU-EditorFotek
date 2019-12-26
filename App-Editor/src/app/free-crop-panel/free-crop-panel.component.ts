@@ -40,8 +40,6 @@ export class FreeCropPanelComponent extends ComponentBase implements OnInit {
       custom: true,
       height: parseFloat(this.height),
       name: this.name,
-      ratioX: 0,
-      ratioY: 0,
       width: parseFloat(this.width),
       desc: null
     };
@@ -57,8 +55,6 @@ export class FreeCropPanelComponent extends ComponentBase implements OnInit {
       custom: true,
       height: parseFloat(this.height),
       name: this.name,
-      ratioX: undefined,
-      ratioY: undefined,
       width: parseFloat(this.width),
       isActive: false,
       desc: null

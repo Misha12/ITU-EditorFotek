@@ -14,16 +14,6 @@ export class AppComponent extends ComponentBase {
     private router: Router
   ) {
     super(deviceDetection);
-
-    const loc = ((url) => {
-      const a = document.createElement('a');
-      a.href = url;
-      return a.pathname;
-    })(location.href);
-
-    if (loc !== '/') {
-      location.href = '/';
-    }
   }
 
   title = 'App-Editor';

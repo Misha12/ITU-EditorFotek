@@ -7,13 +7,13 @@ import { CanvasService } from '../CanvasService';
 export interface CropSetting {
   id: string;
   name: string;
-  ratioX: number;
-  ratioY: number;
+  ratioX?: number;
+  ratioY?: number;
   isActive: boolean;
   desc: string;
   custom: boolean;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
 @Component({
@@ -25,16 +25,13 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
   isCustomSelected = false;
 
   settings: CropSetting[] = [
-    // tslint:disable-next-line: max-line-length
-    { id: 'facebook_profile', name: 'Facebook - Profilová', desc: 'Profilová fotografie na Facebook', ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false },
-    // tslint:disable-next-line: max-line-length
-    { id: 'facebook_header', name: 'Facebook - Záhlaví', desc: 'Záhlaví na Facebook', ratioX: 1, ratioY: 2.7, height: 0, width: 0, isActive: false, custom: false },
-    { id: 'isic', name: 'ISIC', desc: 'Průkazové fotografie - ISIC', ratioX: 5, ratioY: 6, width: 0, height: 0, isActive: false, custom: false },
-    { id: 'usa-passport', name: 'USA - Vízum', desc: null, ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false },
+    { id: 'facebook_profile', name: 'Facebook - Profilová', desc: 'Profilová fotografie na Facebook', ratioX: 1, ratioY: 1, isActive: false, custom: false },
+    { id: 'facebook_header', name: 'Facebook - Záhlaví', desc: 'Záhlaví na Facebook', ratioX: 1, ratioY: 2.7, isActive: false, custom: false },
+    { id: 'isic', name: 'ISIC', desc: 'Průkazové fotografie - ISIC', ratioX: 5, ratioY: 6, isActive: false, custom: false },
+    { id: 'usa-passport', name: 'USA - Vízum', desc: null, ratioX: 1, ratioY: 1, isActive: false, custom: false },
     { id: 'zbrojni-prukaz', name: 'Zbrojní průkaz', desc: null, ratioX: 7, ratioY: 9, height: 0, width: 0, isActive: false, custom: false },
-    { id: 'ig-story', name: 'Instagram - Stories', desc: 'Instagramové příběhy', ratioX: 9, ratioY: 16, width: 0, height: 0, isActive: false, custom: false },
-    // tslint:disable-next-line: max-line-length
-    { id: 'ig-landscape', name: 'Instagram - Profilová', desc: 'Profilová fotografie na Instagram', ratioX: 1, ratioY: 1, width: 0, height: 0, isActive: false, custom: false }
+    { id: 'ig-story', name: 'Instagram - Stories', desc: 'Instagramové příběhy', ratioX: 9, ratioY: 16, isActive: false, custom: false },
+    { id: 'ig-landscape', name: 'Instagram - Profilová', desc: 'Profilová fotografie na Instagram', ratioX: 1, ratioY: 1, isActive: false, custom: false }
   ];
 
   private selectedSetting: string;
@@ -47,7 +44,9 @@ export class CropToolsComponent extends ComponentBase implements OnInit {
     private router: Router,
     protected deviceDetection: DeviceDetectorService,
     private canvasService: CanvasService
-  ) { super(deviceDetection); }
+  ) {
+    super(deviceDetection);
+  }
 
   ngOnInit() {
     this.loadSettings();
